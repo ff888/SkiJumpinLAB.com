@@ -1,5 +1,7 @@
+import os
+import pandas as pd
+
 from django.shortcuts import render
-from django.http import HttpResponse
 
 
 def home(request):
@@ -19,8 +21,23 @@ def fantasy_league(request):
 
 
 def statistics(request):
-    return render(request, 'ski/statistics.html', {'title': 'Statistics'})
+    csv_folder = 'media'
+    csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv')]
+
+    if request.method == 'GET':
+        csv_file = request.GET.get('csv_file', None)
+
+        if csv_file:
+            file_path = os.path.join(csv_folder, csv_file)
+            df = pd.read_csv(file_path)
+            df.columns = df.columns.str.replace(' ', '_')
+            rows = df.to_dict('records')
+            title = 'Statistics - ' + csv_file
+            return render(request, 'ski/statistics.html', {'rows': rows, 'title': title})
+
+    return render(request, 'ski/statistics.html', {'csv_files': csv_files, 'title': 'Statistics'})
 
 
 def blog(request):
+
     return render(request, 'ski/blog.html', {'title': 'Blog'})
