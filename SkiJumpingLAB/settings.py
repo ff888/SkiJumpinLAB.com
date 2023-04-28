@@ -24,10 +24,10 @@ with open(os.path.join(BASE_DIR, '.gitignore')) as f:
             continue
         path = os.path.join(BASE_DIR, line)
         if os.path.isdir(path):
-            # Ignorowanie katalogów
+            # Ignore dirs
             STATICFILES_DIRS.append(path)
         elif os.path.isfile(path):
-            # Ignorowanie plików
+            # Ignore files
             STATICFILES_EXCLUDE.append(path)
 
 
@@ -142,9 +142,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
