@@ -16,11 +16,20 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
+# Ignore files and dirs -> .gitignore
+with open(os.path.join(BASE_DIR, '.gitignore')) as f:
+    for line in f:
+        line = line.strip()
+        if line.startswith('#') or not line:
+            continue
+        path = os.path.join(BASE_DIR, line)
+        if os.path.isdir(path):
+            # Ignorowanie katalogów
+            STATICFILES_DIRS.append(path)
+        elif os.path.isfile(path):
+            # Ignorowanie plików
+            STATICFILES_EXCLUDE.append(path)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8(ug3-r0p6k(ngrrqj&a2s#2s^+^%fe=43@v#0yu718oampuk0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,6 +99,13 @@ DATABASES = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Import local settings
+try:
+    from .settings_local import *
+except ImportError:
+    pass
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

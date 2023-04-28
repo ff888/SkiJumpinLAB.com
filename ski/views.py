@@ -21,17 +21,27 @@ def fantasy_league(request):
 
 
 def statistics(request):
+    # directory where CSV files are located
     csv_folder = 'media'
+    # list of CSV files
     csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv')]
 
+    # Check if the request method is GET
     if request.method == 'GET':
+        # Get the value of the 'csv_file' parameter from the request's GET dictionary
         csv_file = request.GET.get('csv_file', None)
 
+        # if parameter was passed in the request
         if csv_file:
+            # path to selected CSV file
             file_path = os.path.join(csv_folder, csv_file)
+            # create a pandas dataframe
             df = pd.read_csv(file_path)
+            # replace all spaces in columns names with underscores
             df.columns = df.columns.str.replace(' ', '_')
+            # Convert the dataframe to a list of dictionaries representing each row
             rows = df.to_dict('records')
+            # Set the title
             title = 'Statistics - ' + csv_file
             return render(request, 'ski/statistics.html', {'rows': rows, 'title': title})
 
