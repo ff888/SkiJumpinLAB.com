@@ -1,4 +1,4 @@
-body {
+.custom-bg-color {
   background-color: #e6e8e6;
   color: black;
 }
@@ -6,6 +6,7 @@ body {
 #SkiJumpingLAB {
     font-size: 24px;
     color: #black;
+
 }
 
 a.no-link-style{
