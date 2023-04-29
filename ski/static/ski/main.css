@@ -6,10 +6,13 @@
 #SkiJumpingLAB {
     font-size: 24px;
     color: #black;
-
 }
 
 a.no-link-style{
     color: black;
     text-decoration: none;
+}
+
+footer {
+  background-color: #cbd0cb;
 }

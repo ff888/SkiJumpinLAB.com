@@ -1,46 +1,48 @@
 {% extends 'ski/base.html' %}
 {% block content %}
-    <h1>Statistics</h1>
-        <form method="GET" action="{% url 'statistics' %}">
-            <label>Tournament List</label>
-            <select name="csv_file">
-                <option value="">None</option>
-                {% for file in csv_files %}
-                    <option value="{{ file }}">{{ file }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Submit</button>
-        </form>
+<h1>Statistics</h1>
+<div class="container m-2">
+    <form method="GET" action="{% url 'statistics' %}">
+        <label>Tournament List</label>
+        <select name="csv_file">
+            <option value="">None</option>
+            {% for file in csv_files %}
+            <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</div>
 
-        {% if rows %}
-        <table>
-            <thead>
-                <tr>
-                    <th>RANKING</th>
-                    <th>NAME</th>
-                    <th>NATIONALITY</th>
-                    <th>DISTANCE JUMP 1</th>
-                    <th>TOTAL POINTS JUMP 1</th>
-                    <th>DISTANCE JUMP 2</th>
-                    <th>TOTAL POINTS JUMP 1</th>
-                    <th>TOTAL RANKING</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in rows %}
-                    <tr>
-                        <td>{{ row.RANKING }}</td>
-                        <td>{{ row.NAME }}</td>
-                        <td>{{ row.NATIONALITY }}</td>
-                        <td>{{ row.DISTANCE_JUMP_1 }}</td>
-                        <td>{{ row.TOTAL_POINTS_JUMP_1 }}</td>
-                        <td>{{ row.DISTANCE_JUMP_2 }}</td>
-                        <td>{{ row.TOTAL_POINTS_JUMP_2 }}</td>
-                        <td>{{ row.TOTAL_POINTS }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% if rows %}
+<table>
+    <thead>
+    <tr>
+        <th>RANKING</th>
+        <th>NAME</th>
+        <th>NATIONALITY</th>
+        <th>DISTANCE JUMP 1</th>
+        <th>TOTAL POINTS JUMP 1</th>
+        <th>DISTANCE JUMP 2</th>
+        <th>TOTAL POINTS JUMP 1</th>
+        <th>TOTAL RANKING</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+    <tr>
+        <td>{{ row.RANKING }}</td>
+        <td>{{ row.NAME }}</td>
+        <td>{{ row.NATIONALITY }}</td>
+        <td>{{ row.DISTANCE_JUMP_1 }}</td>
+        <td>{{ row.TOTAL_POINTS_JUMP_1 }}</td>
+        <td>{{ row.DISTANCE_JUMP_2 }}</td>
+        <td>{{ row.TOTAL_POINTS_JUMP_2 }}</td>
+        <td>{{ row.TOTAL_POINTS }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endif %}
 
 

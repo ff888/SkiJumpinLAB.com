@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,15 +10,17 @@
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <!-- link to css file CSS "custom.css" -->
     <link rel="stylesheet" type="text/css" href="{% static 'ski/main.css' %}">
+
     <!-- Tittle -->
     {% if title %}
     <title>Ski Jumping LAB - {{ title }}</title>
     {% else %}
     <title>Ski Jumping LAB</title>
     {% endif %}
-</head>
-<body class="custom-bg-color">
 
+</head>
+
+<body class="custom-bg-color">
 <!-- Top Page Logo -->
 <div class="container" id="LogoBar">
     <div class="d-flex justify-content-center mt-4 mb-1">
@@ -80,7 +83,7 @@
             </li>
             {% else %}
             <li class="nav-item dropdown">
-                <button type="button" class="btn btn-outline-primary btn-sm mx-auto" href="#" id="navbarDropdown"
+                <button type="button" class="btn btn-outline-primary btn-sm mx-auto" id="navbarDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                     Login
                 </button>
@@ -115,9 +118,41 @@
     </div>
 </nav>
 
-<div class="container mt-3">
+<div class="container mt-3 mb-5">
     {% block content %} {% endblock %}
 </div>
+
+<!-- Footer -->
+<footer class="footer pt-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-unstyled d-flex justify-content-center mb-0" style="padding: 0;">
+                    <li class="me-3 my-2">
+                        <a href="#">
+                            <img src="{% static 'ski/instagram.png' %}" title="Visit Ski Jumping LAB Instagram" width="50" height="50" class="d-inline-block">
+                        </a>
+                    </li>
+                    <li class="me-3 my-2">
+                        <a href="#">
+                            <img src="{% static 'ski/twitter.png' %}" title="Visit Ski Jumping LAB Twitter" width="50" height="50" class="d-inline-block">
+                        </a>
+                    </li>
+                    <li class="me-3 my-2">
+                        <a href="#">
+                            <img src="{% static 'ski/facebook.png' %}" title="Visit Ski Jumping LAB Facebook" width="50" height="50" class="d-inline-block">
+                        </a>
+                    </li>
+                    <li class="me-3 my-2">
+                        <a href="#">
+                            <img src="{% static 'ski/mail.png' %}" title="Email Us!" width="50" height="50" class="d-inline-block">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <!-- Bootstrap Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
