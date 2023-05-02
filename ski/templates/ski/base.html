@@ -21,104 +21,107 @@
 </head>
 
 <body class="custom-bg-color">
-<!-- Top Page Logo -->
-<div class="container" id="LogoBar">
-    <div class="d-flex justify-content-center mt-4 mb-1">
-        <div class="d-flex flex-column justify-content-center">
-            <a class="container" href="{% url 'home' %}">
-                <img src="{% static 'ski/logo.png' %}" title="jump icons" width="50" height="50" class="d-inline-block">
-            </a>
+<div id="LogoNav">
+    <!-- Top Page Logo -->
+    <div class="container pt-3" id="LogoBar">
+        <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column justify-content-center">
+                <a class="container" href="{% url 'home' %}">
+                    <img src="{% static 'ski/logo.png' %}" title="jump icons" width="50" height="50" class="d-inline-block">
+                </a>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column justify-content-center">
+                <a class="container align-items-center text-centre no-link-style" href="{% url 'home' %}">
+                    <span id="SkiJumpingLAB">Ski Jumping LAB</span>
+                </a>
+            </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        <div class="d-flex flex-column justify-content-center">
-            <a class="container align-items-center text-centre no-link-style" href="{% url 'home' %}">
-                <span id="SkiJumpingLAB">Ski Jumping LAB</span>
-            </a>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-md text-center">
+        <button class="navbar-toggler ms-auto me-3 border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+                      <i class="navbar-toggler-icon"></i>
+                  </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav text-center ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'live' %}">LIVE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'fantasy-league' %}">Fantasy League</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'statistics' %}">Statistics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                </li>
+            </ul>
+
+            <!-- Dropdown Login/Registration Form -->
+            <ul class="navbar-nav me-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item dropdown">
+                    <button type="button" class="btn btn-outline-primary btn-sm mx-auto" id="navbarDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        Login
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start mt-2"
+                        aria-labelledby="navbarDropdown">
+                        <form class="px-4 py-3" method="POST" action="#">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_username">Username</label>
+                                <input type="text" class="form-control" id="id_username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password">Password</label>
+                                <input type="password" class="form-control" id="id_password" name="password" required>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    Remember me
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </form>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">New around here? Sign up</a>
+                        <a class="dropdown-item" href="#">Forgot password?</a>
+                    </ul>
+                </li>
+                {% endif %}
+            </ul>
         </div>
-    </div>
+    </nav>
 </div>
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-md text-center">
-    <button class="navbar-toggler ms-auto me-3 border-0" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon">
-                  <i class="navbar-toggler-icon"></i>
-              </span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav text-center ms-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'live' %}">LIVE</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'fantasy-league' %}">Fantasy League</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'statistics' %}">Statistics</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog' %}">Blog</a>
-            </li>
-        </ul>
 
-        <!-- Dropdown Login/Registration Form -->
-        <ul class="navbar-nav me-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    {{ user.username }}
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-            </li>
-            {% else %}
-            <li class="nav-item dropdown">
-                <button type="button" class="btn btn-outline-primary btn-sm mx-auto" id="navbarDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                    Login
-                </button>
-
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start mt-2"
-                    aria-labelledby="navbarDropdown">
-                    <form class="px-4 py-3" method="POST" action="#">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="id_username">Username</label>
-                            <input type="text" class="form-control" id="id_username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="id_password">Password</label>
-                            <input type="password" class="form-control" id="id_password" name="password" required>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                                Remember me
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Sign in</button>
-                    </form>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">New around here? Sign up</a>
-                    <a class="dropdown-item" href="#">Forgot password?</a>
-                </ul>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
-
-<div class="container mt-3 mb-5">
+<div class="container my-3 mx-auto p-0" id="BlockContent">
     {% block content %} {% endblock %}
 </div>
 

@@ -3,6 +3,11 @@
   color: black;
 }
 
+#LogoNav {
+    background-color: #cbd0cb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 #SkiJumpingLAB {
     font-size: 24px;
     color: #black;
@@ -13,6 +18,16 @@ a.no-link-style{
     text-decoration: none;
 }
 
+
+.custom-table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+              0 -2px 4px rgba(0, 0, 0, 0.1),
+              2px 0 4px rgba(0, 0, 0, 0.1),
+              -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
 footer {
   background-color: #cbd0cb;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.3);
 }
+

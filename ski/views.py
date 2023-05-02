@@ -43,7 +43,9 @@ def statistics(request):
             rows = df.to_dict('records')
             # Set the title
             title = f"Statistics - {csv_file}"
-            return render(request, 'ski/statistics.html', {'rows': rows, 'title': title})
+            # Set the table title
+            table_title = csv_file
+            return render(request, 'ski/statistics.html', {'rows': rows, 'title': title, 'table_title': table_title})
 
     return render(request, 'ski/statistics.html', {'csv_files': csv_files, 'title': 'Statistics'})
 
