@@ -17,6 +17,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Ignore files and dirs -> .gitignore
+STATICFILES_DIRS = []
+STATICFILES_EXCLUDE = []
 with open(os.path.join(BASE_DIR, '.gitignore')) as f:
     for line in f:
         line = line.strip()

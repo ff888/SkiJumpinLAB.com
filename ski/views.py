@@ -22,9 +22,9 @@ def fantasy_league(request):
 
 def statistics(request):
     # directory where CSV files are located
-    csv_folder = 'media'
+    csv_folder = 'media/ski_db'
     # list of CSV files
-    csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv')]
+    csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv') and f.split('_')[0] >= '2002']
 
     # Check if the request method is GET
     if request.method == 'GET':
@@ -33,13 +33,6 @@ def statistics(request):
 
         # if parameter was passed in the request
         if csv_file in csv_files:
-            """file_name_components = csv_file.split('_').replace('.csv', '')
-            tournament_season = file_name_components[0]
-            tournament_city = file_name_components[1]
-            tournament_type = file_name_components[3]
-            tournament_hill = file_name_components[4]
-            tournament_gender = file_name_components[5]
-            tournament_team = file_name_components[6]"""
             # path to selected CSV file
             file_path = os.path.join(csv_folder, csv_file)
             # create a pandas dataframe
