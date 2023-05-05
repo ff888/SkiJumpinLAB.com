@@ -3,24 +3,93 @@
 
 <div class="container my-4">
     <form method="GET" action="{% url 'statistics' %}">
-        <div class="row align-items-center">
-            <div class="col-auto">
-                <label class="me-2">Tournament List</label>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="season_filter">FILTER BY SEASON</label>
+                    <select class="form-control" id="season_filter" name="season_filter">
+                        <option value="">ALL</option>
+                        {% for season in categories.season_filter %}
+                        <option value="{{ season }}">{{ season }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="col-auto">
-                <select name="csv_file" class="form-select">
-                    <option value="">Choose Tournament</option>
-                    {% for file in csv_files %}
-                    <option value="{{ file }}">{{ file }}</option>
-                    {% endfor %}
-                </select>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="city_filter">FILTER BY CITY</label>
+                    <select class="form-control" id="city_filter" name="city_filter">
+                        <option value="">ALL</option>
+                        {% for city in categories.city_filter %}
+                        <option value="{{ city }}">{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-dark btn-sm">Submit</button>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="tournament_filter">FILTER BY TOURNAMENT TYPE</label>
+                    <select class="form-control" id="tournament_filter" name="tournament_filter">
+                        <option value="">ALL</option>
+                        {% for tour in categories.tournament_filter %}
+                        <option value="{{ tour }}">{{ tour }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="hill_filter">FILTER BY HILL SIZE</label>
+                    <select class="form-control" id="hill_filter" name="hill_filter">
+                        <option value="">ALL</option>
+                        {% for hill in categories.hill_filter %}
+                        <option value="{{ hill }}">{{ hill }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="gender_filter">FILTER BY GENDER</label>
+                    <select class="form-control" id="gender_filter" name="gender_filter">
+                        <option value="">ALL</option>
+                        {% for gender in categories.gender_filter %}
+                        <option value="{{ gender }}">{{ gender }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="team_filter">FILTER BY COMPETITION TYPE</label>
+                    <select class="form-control" id="team_filter" name="team_filter">
+                        <option value="">ALL</option>
+                        {% for team in categories.team_filter %}
+                        <option value="{{ team }}">{{ team }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center mt-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </form>
 </div>
+
+{% if filtered_csv_files %}
+<div>
+    <ul>
+        {% for file in filtered_csv_files %}
+        <li><a href="#">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 
 {% if rows %}
 <div class="container" id="Stst">
