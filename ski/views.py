@@ -32,13 +32,16 @@ def statistics(request):
 
     # Check if the request method is GET
     if request.method == 'GET':
-        # Get the filter values from the request's GET dictionary
+        # Get values from the statistics filters
         season_filter = request.GET.get('season_filter')
         city_filter = request.GET.get('city_filter')
         tournament_filter = request.GET.get('tournament_filter')
         hill_filter = request.GET.get('hill_filter')
         gender_filter = request.GET.get('gender_filter')
         team_filter = request.GET.get('team_filter')
+
+        # Get value if select (click) on tournament link
+        selected_file = request.GET.get('selected_file')
 
         # Filter the csv_files based on the filter values
         filtered_csv_files = [file for file in csv_files if
@@ -49,11 +52,30 @@ def statistics(request):
                               (gender_filter is None or gender_filter in file.split('_')[-2]) and
                               (team_filter is None or team_filter in file)]
 
+        # Sort list from the most recent tournament
         filtered_csv_files = sorted(filtered_csv_files, key=lambda file: file.split('_')[0], reverse=True)
 
+        # Get value if select (click) on tournament link
+        selected_file = request.GET.get('selected_file', '')
+
+        # path to selected CSV file
+        file_path = os.path.join(csv_folder, selected_file)
+        # create a pandas dataframe
+        df = pd.read_csv(file_path)
+        # replace all spaces in columns names with underscores
+        df.columns = df.columns.str.replace(' ', '_')
+        # Convert the dataframe to a list of dictionaries representing each row
+        rows = df.to_dict('records')
+        # Set the title
+        title = f"Statistics - {selected_file}"
+        # Set the table title
+        table_title = selected_file
+
+        contex = {'filtered_csv_files': filtered_csv_files, 'categories': categories, 'rows': rows, 'title': title,
+                  'table_title': table_title}
+
         # render the files list in your template
-        return render(request, 'ski/statistics.html',
-                      {'filtered_csv_files': filtered_csv_files, 'categories': categories, 'csv_files': csv_files})
+        return render(request, 'ski/statistics.html', contex)
 
 
 def blog(request):

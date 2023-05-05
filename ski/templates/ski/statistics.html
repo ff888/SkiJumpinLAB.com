@@ -88,11 +88,16 @@
 <div>
     <ul>
         {% for file in filtered_csv_files %}
-        <li><a href="#">{{ file }}</a></li>
+        <li>
+            <div class="container">
+                <a href="{% url 'statistics' %}?selected_file={{ file }}">{{ file }}</a>
+            </div>
+        </li>
         {% endfor %}
     </ul>
 </div>
 {% endif %}
+
 
 {% if rows %}
 <div class="container" id="Stst">
