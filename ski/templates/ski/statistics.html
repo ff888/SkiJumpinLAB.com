@@ -44,9 +44,11 @@
                     <label for="hill_filter">FILTER BY HILL SIZE</label>
                     <select class="form-control" id="hill_filter" name="hill_filter">
                         <option value="">ALL</option>
-                        {% for hill in categories.hill_filter %}
+                        <option value="SF">Flying Hill - (Mahmut)</option>
+                        <option value="LH">Large Hill</option>
+                        <option value="NH">Normal Hill</option>
+                        <option value="SH">Small Hill</option>
                         <option value="{{ hill }}">{{ hill }}</option>
-                        {% endfor %}
                     </select>
                 </div>
             </div>
@@ -55,9 +57,10 @@
                     <label for="gender_filter">FILTER BY GENDER</label>
                     <select class="form-control" id="gender_filter" name="gender_filter">
                         <option value="">ALL</option>
-                        {% for gender in categories.gender_filter %}
+                        <option value="M">Man</option>
+                        <option value="W">Woman</option>
                         <option value="{{ gender }}">{{ gender }}</option>
-                        {% endfor %}
+
                     </select>
                 </div>
             </div>

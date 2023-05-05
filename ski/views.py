@@ -43,10 +43,10 @@ def statistics(request):
         # Filter the csv_files based on the filter values
         filtered_csv_files = [file for file in csv_files if
                               (city_filter is None or city_filter in file) and
-                              (hill_filter is None or hill_filter in file) and
+                              (hill_filter is None or hill_filter in file.split('_')[-3]) and
                               (season_filter is None or season_filter in file) and
-                              (tournament_filter is None or tournament_filter in file) and
-                              (gender_filter is None or gender_filter in file) and
+                              (tournament_filter is None or tournament_filter in file.split('_')[-4]) and
+                              (gender_filter is None or gender_filter in file.split('_')[-2]) and
                               (team_filter is None or team_filter in file)]
 
         filtered_csv_files = sorted(filtered_csv_files, key=lambda file: file.split('_')[0], reverse=True)
