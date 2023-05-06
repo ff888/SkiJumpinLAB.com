@@ -24,7 +24,7 @@ def fantasy_league(request):
 def statistics(request):
     # directory where CSV files are located
     csv_folder = 'media/ski_db'
-    # list of CSV files target only tournaments after 2001
+    # list of CSV files target only tournaments after 2002
     csv_files = [f for f in os.listdir(csv_folder) if f.endswith('.csv') and f.split('_')[0] >= '2002']
 
     # Get category values for filters
@@ -52,8 +52,10 @@ def statistics(request):
         # Sort list from the most recent tournament
         filtered_csv_files = sorted(filtered_csv_files, key=lambda file: file.split('_')[0], reverse=True)
 
-        # Get value if select (click) on tournament link
+        # Get value if select (click) on tournament link and 'sort by' tabs
         selected_file = request.GET.get('selected_file')
+        speed_table = request.GET.get('sort_by', 'speed_table')
+        ranking_table = request.GET.get('sort_by', 'ranking_table')
 
         if selected_file:
             # path to selected CSV file
@@ -64,6 +66,15 @@ def statistics(request):
             df.columns = df.columns.str.replace(' ', '_')
             # Convert the dataframe to a list of dictionaries representing each row
             rows = df.to_dict('records')
+            if ranking_table:
+                rows = rows
+
+            if speed_table:
+                speed_df = df[['NAME', 'NATIONALITY', 'SPEED_JUMP_1', 'SPEED_JUMP_2', 'RANKING']]
+                speed_df['SPEED_JUMPS_SUM'] = df['SPEED_JUMP_1'] + df['SPEED_JUMP_2']
+                speed_df = df.to_dict('records')
+                rows = speed_df
+
             # Set the title
             title = f"Statistics - {selected_file}"
             # Set the table title
