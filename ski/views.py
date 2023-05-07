@@ -54,33 +54,55 @@ def statistics(request):
 
         # Get value if select (click) on tournament link and 'sort by' tabs
         selected_file = request.GET.get('selected_file')
-        speed_table = request.GET.get('sort_by', 'speed_table')
-        ranking_table = request.GET.get('sort_by', 'ranking_table')
 
         if selected_file:
             # path to selected CSV file
             file_path = os.path.join(csv_folder, selected_file)
             # create a pandas dataframe
             df = pd.read_csv(file_path)
+
+            # Replace NaN values with 0 in all columns
+            df.fillna(0, inplace=True)
+
+            # Calculate the sum of the columns and add new columns do DF
+            df['SPEED JUMPS SUM'] = (df['SPEED JUMP 1'] + df['SPEED JUMP 2']).round(2)
+
+            df['COMPENSATION POINTS'] = (df['GATE COMPENSATION JUMP 1'] + df['WIND COMPENSATION JUMP 1'] + df[
+                'GATE COMPENSATION JUMP 2'] + df['WIND COMPENSATION JUMP 2']).round(2)
+
+            df['STYLE TOTAL POINTS'] = (df['JUDGE TOTAL POINTS JUMP 1'] + df['JUDGE TOTAL POINTS JUMP 2']).round(2)
+
+            # Rank the DataFrame based on the SPEED_JUMPS_SUM column in descending order
+            df['RANKING BY SPEED'] = df['SPEED JUMPS SUM'].rank(method='dense', ascending=False).astype(int)
+            df['LUCK RANKING'] = df['COMPENSATION POINTS'].rank(method='dense', ascending=False).astype(int)
+            df['STYLE RANKING'] = df['STYLE TOTAL POINTS'].rank(method='dense', ascending=False).astype(int)
+
+            sort_by_ranking = request.GET.get('sort_by', 'ranking_table')
+            sort_by_speed = request.GET.get('sort_by', 'speed_table')
+            sort_by_style = request.GET.get('sort_by', 'style_table')
+            sort_by_luck = request.GET.get('sort_by', 'luck_table')
+
+            if sort_by_ranking == 'ranking_table':
+                df = df.sort_values(by='RANKING', ascending=True)
+            elif sort_by_speed == 'speed_table':
+                df = df.sort_values(by='SPEED JUMPS SUM', ascending=True)
+            elif sort_by_style == 'style_table':
+                df = df.sort_values(by='STYLE RANKING', ascending=True)
+            elif sort_by_luck == 'luck_table':
+                df = df.sort_values(by='LUCK RANKING', ascending=True)
+
             # replace all spaces in columns names with underscores
             df.columns = df.columns.str.replace(' ', '_')
+
             # Convert the dataframe to a list of dictionaries representing each row
             rows = df.to_dict('records')
-            if ranking_table:
-                rows = rows
-
-            if speed_table:
-                speed_df = df[['NAME', 'NATIONALITY', 'SPEED_JUMP_1', 'SPEED_JUMP_2', 'RANKING']]
-                speed_df['SPEED_JUMPS_SUM'] = df['SPEED_JUMP_1'] + df['SPEED_JUMP_2']
-                speed_df = df.to_dict('records')
-                rows = speed_df
 
             # Set the title
             title = f"Statistics - {selected_file}"
             # Set the table title
             table_title = selected_file
-            # render the files list in your template
 
+            # render the files list in your template
             return render(request, 'ski/statistics.html',
                           {'filtered_csv_files': filtered_csv_files, 'categories': categories, 'rows': rows,
                            'title': title, 'table_title': table_title})
