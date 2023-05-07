@@ -77,18 +77,17 @@ def statistics(request):
             df['LUCK RANKING'] = df['COMPENSATION POINTS'].rank(method='dense', ascending=False).astype(int)
             df['STYLE RANKING'] = df['STYLE TOTAL POINTS'].rank(method='dense', ascending=False).astype(int)
 
-            sort_by_ranking = request.GET.get('sort_by', 'ranking_table')
-            sort_by_speed = request.GET.get('sort_by', 'speed_table')
-            sort_by_style = request.GET.get('sort_by', 'style_table')
-            sort_by_luck = request.GET.get('sort_by', 'luck_table')
+            # Retrieve the 'sort_by' parameter from the request's GET parameters
+            sort_by = request.GET.get('sort_by')
 
-            if sort_by_ranking == 'ranking_table':
+            # Sort the DataFrame based on the value of 'sort_by'
+            if sort_by == 'ranking_table':
                 df = df.sort_values(by='RANKING', ascending=True)
-            elif sort_by_speed == 'speed_table':
+            elif sort_by == 'speed_table':
                 df = df.sort_values(by='SPEED JUMPS SUM', ascending=True)
-            elif sort_by_style == 'style_table':
+            elif sort_by == 'style_table':
                 df = df.sort_values(by='STYLE RANKING', ascending=True)
-            elif sort_by_luck == 'luck_table':
+            elif sort_by == 'luck_table':
                 df = df.sort_values(by='LUCK RANKING', ascending=True)
 
             # replace all spaces in columns names with underscores
@@ -97,10 +96,20 @@ def statistics(request):
             # Convert the dataframe to a list of dictionaries representing each row
             rows = df.to_dict('records')
 
+            # Create list of file name elements and use them as a table name
+            name_list = selected_file.split('_')
+            name_date = name_list[0]
+            name_city = name_list[1]
+            name_codex = name_list[2]
+            name_tour_type = name_list[3]
+            name_hill = name_list[4]
+            name_gender = name_list[5]
+            name_team = name_list[6].split('.')[0]
+
             # Set the title
             title = f"Statistics - {selected_file}"
             # Set the table title
-            table_title = selected_file
+            table_title = f'{name_date} {name_city}'
 
             # render the files list in your template
             return render(request, 'ski/statistics.html',

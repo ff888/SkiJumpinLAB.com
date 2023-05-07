@@ -31,9 +31,12 @@
                     <label for="tournament_filter">FILTER BY TOURNAMENT TYPE</label>
                     <select class="form-control" id="tournament_filter" name="tournament_filter">
                         <option value="">ALL</option>
-                        {% for tour in categories.tournament_filter %}
-                        <option value="{{ tour }}">{{ tour }}</option>
-                        {% endfor %}
+                        <option value="CH">World Championship</option>
+                        <option value="GP">Grand Prix</option>
+                        <option value="OL">Olympic Winter Games</option>
+                        <option value="WC">World Cup</option>
+                        <option value="4H">Four Hill Tournament</option>
+                        <option value="RA">Raw Air</option>
                     </select>
                 </div>
             </div>
@@ -48,7 +51,6 @@
                         <option value="LH">Large Hill</option>
                         <option value="NH">Normal Hill</option>
                         <option value="SH">Small Hill</option>
-                        <option value="{{ hill }}">{{ hill }}</option>
                     </select>
                 </div>
             </div>
@@ -59,8 +61,6 @@
                         <option value="">ALL</option>
                         <option value="M">Man</option>
                         <option value="W">Woman</option>
-                        <option value="{{ gender }}">{{ gender }}</option>
-
                     </select>
                 </div>
             </div>
@@ -69,9 +69,9 @@
                     <label for="team_filter">FILTER BY COMPETITION TYPE</label>
                     <select class="form-control" id="team_filter" name="team_filter">
                         <option value="">ALL</option>
-                        {% for team in categories.team_filter %}
-                        <option value="{{ team }}">{{ team }}</option>
-                        {% endfor %}
+                        <option value="I">Individual</option>
+                        <option value="T">Team</option>
+                        <option value="X">Mixed Team</option>
                     </select>
                 </div>
             </div>
@@ -190,7 +190,7 @@
             <table class="table table-striped table-bordered mb-4">
                 <thead>
                     <tr>
-                        <th colspan="8" class="text-center">
+                        <th colspan="17" class="text-center">
                             <h4>{{ table_title }}</h4>
                         </th>
                     </tr>
