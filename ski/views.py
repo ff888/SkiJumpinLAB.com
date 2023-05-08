@@ -1,5 +1,5 @@
 import os
-from .utils.ststistics_helpers import get_categories
+from .utils.ststistics_helpers import get_categories, files_by_year, files_by_season
 import pandas as pd
 
 from django.shortcuts import render
@@ -29,6 +29,10 @@ def statistics(request):
 
     # Get category values for filters
     categories = get_categories(csv_files)
+
+    # Get values for displaying files
+    divide_by_year = files_by_year(csv_files)
+    divide_by_season = files_by_season(csv_files)
 
     # Check if the request method is GET
     if request.method == 'GET':
@@ -81,7 +85,7 @@ def statistics(request):
             sort_by = request.GET.get('sort_by')
 
             # Sort the DataFrame based on the value of 'sort_by'
-            if sort_by == 'ranking_table':
+            if sort_by == 'ranking_table' or sort_by == 'full_table':
                 df = df.sort_values(by='RANKING', ascending=True)
             elif sort_by == 'speed_table':
                 df = df.sort_values(by='SPEED JUMPS SUM', ascending=True)
@@ -89,6 +93,8 @@ def statistics(request):
                 df = df.sort_values(by='STYLE RANKING', ascending=True)
             elif sort_by == 'luck_table':
                 df = df.sort_values(by='LUCK RANKING', ascending=True)
+            elif sort_by == 'team_table':
+                df = df.sort_values(by='TEAM RANKING', ascending=True)
 
             # replace all spaces in columns names with underscores
             df.columns = df.columns.str.replace(' ', '_')
@@ -113,12 +119,18 @@ def statistics(request):
 
             # render the files list in your template
             return render(request, 'ski/statistics.html',
-                          {'filtered_csv_files': filtered_csv_files, 'categories': categories, 'rows': rows,
-                           'title': title, 'table_title': table_title})
+                          {'filtered_csv_files': filtered_csv_files,
+                           'categories': categories,
+                           'rows': rows,
+                           'title': title,
+                           'table_title': table_title})
 
         # render the files list in your template
         return render(request, 'ski/statistics.html',
-                      {'filtered_csv_files': filtered_csv_files, 'categories': categories})
+                      {'divide_by_year': divide_by_year,
+                       'divide_by_season': divide_by_season,
+                       'filtered_csv_files': filtered_csv_files,
+                       'categories': categories})
 
 
 def blog(request):
