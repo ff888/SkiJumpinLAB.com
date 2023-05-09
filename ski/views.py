@@ -1,7 +1,8 @@
 import os
-from .utils.ststistics_helpers import get_categories, files_by_year, files_by_season
 import pandas as pd
 
+from .utils.ststistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
+    get_raw_air_files
 from django.shortcuts import render
 
 
@@ -30,10 +31,6 @@ def statistics(request):
     # Get category values for filters
     categories = get_categories(csv_files)
 
-    # Get values for displaying files
-    divide_by_year = files_by_year(csv_files)
-    divide_by_season = files_by_season(csv_files)
-
     # Check if the request method is GET
     if request.method == 'GET':
         # Get values from the statistics filters
@@ -53,8 +50,17 @@ def statistics(request):
                               (gender_filter is None or gender_filter in file.split('_')[-2]) and
                               (team_filter is None or team_filter in file)]
 
+        if tournament_filter == '4H':
+            filtered_csv_files = get_four_hills_files(csv_files)
+        if tournament_filter == 'RA':
+            filtered_csv_files = get_raw_air_files(csv_files)
+
         # Sort list from the most recent tournament
         filtered_csv_files = sorted(filtered_csv_files, key=lambda file: file.split('_')[0], reverse=True)
+
+        # Get values for displaying files
+        divide_by_year = files_by_year(filtered_csv_files)
+        divide_by_season = files_by_season(filtered_csv_files)
 
         # Get value if select (click) on tournament link and 'sort by' tabs
         selected_file = request.GET.get('selected_file')
