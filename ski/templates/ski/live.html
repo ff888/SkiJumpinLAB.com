@@ -16,7 +16,7 @@
         </span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>
-    <div class="collapse" id="collapseLive">
+    <div class="collapse shadow" id="collapseLive">
         <a href="{% url 'statistics' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
             <span class="link-text">No live event or table if event is on</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
@@ -26,24 +26,27 @@
 
 <div class="list-group list-group-year" style="display: block;">
     <h2 class="text-center mt-4">Upcoming Events</h2>
-    {% for year, months in date_list.items %}
-    {% for month in months %}
-    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapse{{ month }}"
+    {% for year, months_dict in date_list.items %}
+    {% for months in months_dict %}
+    {% for month, event_list in months.items %}
+    <a class="list-group-item list-group-item-action shadow" data-bs-toggle="collapse" href="#collapse{{ month }}"
        aria-expanded="false" aria-controls="collapse{{ month }}">
-        <span class="link-text fw-bold fs-5">
-            <div class="d-flex align-items-center">
-              <p class="m-0">{{ month }} {{ year }}</p>
-            </div>
-        </span>
+                <span class="link-text fw-bold fs-5">
+                    <div class="d-flex align-items-center">
+                      <p class="m-0">{{ month }} {{ year }}</p>
+                    </div>
+                </span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>
-
+    {% for event in event_list %}
     <div class="collapse" id="collapse{{ month }}">
         <a href="{% url 'statistics' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
-            <span class="link-text">List of events links</span>
+            <span class="link-text">{{ event }}</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
         </a>
     </div>
+    {% endfor %}
+    {% endfor %}
     {% endfor %}
     {% endfor %}
 </div>
