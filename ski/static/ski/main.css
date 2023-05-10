@@ -18,6 +18,26 @@ a.no-link-style {
     text-decoration: none;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#content {
+  flex: 1 0 auto;
+  margin-bottom: -150px;
+}
+
+footer {
+  flex-shrink: 0;
+  height: 150px;
+}
+
+
 
 .dot {
   width: 8px;
