@@ -1,19 +1,19 @@
 {% extends 'ski/base.html' %}
 {% block content %}
 
-<!-- Live events collapsing info -->
 <div class="list-group list-group-year" style="display: block;">
     <h2 class="text-center mt-4">LIVE</h2>
-    <a class="list-group-item list-group-item-action">
-      <span class="link-text fw-bold fs-5 d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center">
-          <div class="me-2 dot text-danger"></div>
-          <p class="text-danger m-0 text-start">LIVE</p>
-          <p class="text-center mx-4 my-0">Tournament Name</p>
-          <div class="me-2 dot text-danger"></div>
-          <p class="text-danger m-0 text-end">LIVE</p>
-        </div>
-      </span>
+    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseLive"
+       aria-expanded="false" aria-controls="collapseLive">
+        <span class="link-text fw-bold fs-5 text-center">
+            <div class="d-flex align-items-center">
+                <div class="me-2 dot text-danger"></div>
+                <p class="text-danger m-0">LIVE</p>
+                <p class="text-center mx-4 my-0">Tournament Name</p>
+                <div class="me-2 dot text-danger"></div>
+                <p class="text-danger m-0">LIVE</p>
+            </div>
+        </span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>
     <div class="collapse" id="collapseLive">
@@ -24,26 +24,28 @@
     </div>
 </div>
 
-<!-- Upcoming events collapsing info -->
 <div class="list-group list-group-year" style="display: block;">
     <h2 class="text-center mt-4">Upcoming Events</h2>
-    {% for date in date_list %}
-    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapse{{ date }}"
-       aria-expanded="false" aria-controls="collapse{{ date }}">
+    {% for year, months in date_list.items %}
+    {% for month in months %}
+    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapse{{ month }}"
+       aria-expanded="false" aria-controls="collapse{{ month }}">
         <span class="link-text fw-bold fs-5">
             <div class="d-flex align-items-center">
-              <p class="m-0">{{ date }}</p>
+              <p class="m-0">{{ month }} {{ year }}</p>
             </div>
         </span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>
-    {% endfor %}
-    <div class="collapse" id="collapse{{ date }}">
-        <a href="{% url 'live' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
+
+    <div class="collapse" id="collapse{{ month }}">
+        <a href="{% url 'statistics' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
             <span class="link-text">List of events links</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
         </a>
     </div>
+    {% endfor %}
+    {% endfor %}
 </div>
 
 {% endblock content %}
