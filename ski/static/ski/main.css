@@ -19,6 +19,20 @@ a.no-link-style {
 }
 
 
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #000;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
 .custom-table {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
               0 -2px 4px rgba(0, 0, 0, 0.1),
