@@ -7,7 +7,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="season_filter">FILTER BY YEAR</label>
-                    <select class="form-control" id="season_filter" name="season_filter">
+                    <select class="form-control shadow" id="season_filter" name="season_filter">
                         <option value="">ALL</option>
                         {% for season, files in divide_by_year.items %}
                         <option value="{{ season }}">{{ season }}</option>
@@ -18,7 +18,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="city_filter">FILTER BY CITY</label>
-                    <select class="form-control" id="city_filter" name="city_filter">
+                    <select class="form-control shadow" id="city_filter" name="city_filter">
                         <option value="">ALL</option>
                         {% for city in categories.city_filter %}
                         <option value="{{ city }}">{{ city }}</option>
@@ -29,7 +29,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="tournament_filter">FILTER BY TOURNAMENT TYPE</label>
-                    <select class="form-control" id="tournament_filter" name="tournament_filter">
+                    <select class="form-control shadow" id="tournament_filter" name="tournament_filter">
                         <option value="">ALL</option>
                         <option value="CH">World Championship</option>
                         <option value="GP">Grand Prix</option>
@@ -45,7 +45,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="hill_filter">FILTER BY HILL SIZE</label>
-                    <select class="form-control" id="hill_filter" name="hill_filter">
+                    <select class="form-control shadow" id="hill_filter" name="hill_filter">
                         <option value="">ALL</option>
                         <option value="SF">Flying Hill - (Mahmut)</option>
                         <option value="LH">Large Hill</option>
@@ -57,7 +57,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="gender_filter">FILTER BY GENDER</label>
-                    <select class="form-control" id="gender_filter" name="gender_filter">
+                    <select class="form-control shadow" id="gender_filter" name="gender_filter">
                         <option value="">ALL</option>
                         <option value="M">Man</option>
                         <option value="W">Woman</option>
@@ -67,7 +67,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="team_filter">FILTER BY COMPETITION TYPE</label>
-                    <select class="form-control" id="team_filter" name="team_filter">
+                    <select class="form-control shadow" id="team_filter" name="team_filter">
                         <option value="">ALL</option>
                         <option value="I">Individual</option>
                         <option value="T">Team</option>
@@ -76,11 +76,15 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center mt-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
+        <form action="{% url 'statistics' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12 text-center mt-3">
+                    <button type="submit" class="btn btn-primary shadow">Submit</button>
+                </div>
             </div>
-        </div>
+        </form>
+
     </form>
 </div>
 
@@ -325,7 +329,8 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>RANKING</th>
+                    <th>TEAM RANKING</th>
+                    <th>INDIVIDUAL RANKING</th>
                     <th>NAME</th>
                     <th>NATIONALITY</th>
                     <th>DISTANCE JUMP 1</th>
@@ -338,12 +343,12 @@
                     <th>RANKING JUMP 2</th>
                     <th>TOTAL POINTS</th>
                     <th>TEAM POINTS</th>
-                    <th>TEAM RANKING</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for row in rows %}
                 <tr>
+                    <td>{{ row.TEAM_RANKING }}</td>
                     <td>{{ row.RANKING }}</td>
                     <td>{{ row.NAME }}</td>
                     <td>{{ row.NATIONALITY }}</td>
@@ -357,7 +362,6 @@
                     <td>{{ row.RANKING_JUMP_2 }}</td>
                     <td>{{ row.TOTAL_POINTS }}</td>
                     <td>{{ row.TEAM_POINTS }}</td>
-                    <td>{{ row.TEAM_RANKING }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -478,7 +482,7 @@
     <h2 class="text-center my-4">Select Year</h2>
     {% for year, files in divide_by_year.items %}
     <a class="list-group-item list-group-item-action shadow" data-bs-toggle="collapse" href="#collapse{{ year }}"
-       aria-expanded="false" aria-controls="collapse{{ year }}">
+       aria-expanded="true" aria-controls="collapse{{ year }}">
         <span class="link-text fw-bold fs-5">{{ year }}</span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>

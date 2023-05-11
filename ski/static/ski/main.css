@@ -32,13 +32,6 @@ body {
   margin-bottom: -150px;
 }
 
-footer {
-  flex-shrink: 0;
-  height: 150px;
-}
-
-
-
 .dot {
   width: 8px;
   height: 8px;

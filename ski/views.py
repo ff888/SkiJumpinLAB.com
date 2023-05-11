@@ -24,6 +24,10 @@ def fantasy_league(request):
     return render(request, 'ski/fantasy-league.html', {'title': 'Fantasy League'})
 
 
+def statistics_main(request):
+    return render(request, 'ski/statistics_main.html', {'title': 'Statistics'})
+
+
 def statistics(request):
     # directory where CSV files are located
     csv_folder = 'media/ski_db'
