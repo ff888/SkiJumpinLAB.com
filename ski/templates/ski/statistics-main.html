@@ -1,0 +1,42 @@
+{% extends 'ski/base.html' %}
+{% block content %}
+
+<div>
+    <h2 class="mt-2 text-center">Welcome to Ski Jumping Statistics.</h2>
+</div>
+
+<div class="row my-5">
+    <div class="col-sm-4 d-flex align-items-center justify-content-center p-3 rounded shadow">
+        <div class="d-flex flex-column align-items-center">
+            <i class="bi bi-bar-chart"></i>
+            <h4 class="mt-2 text-center mb-3">Historical Rankings</h4>
+            <p class="text-center">Looking for information about previous Ski Jumping competitions?<br>Look no further!<br>Find thousands of historic tables.<br>Cool rankings and statistics.</p>
+            <a href="{% url 'statistics-rankings' %}">
+                <button class="btn btn-primary mt-3">Start Now</button>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-4 d-flex align-items-center justify-content-center p-3 rounded shadow">
+        <div class="d-flex flex-column align-items-center">
+            <i class="bi bi-calendar"></i>
+            <h4 class="mt-2 text-center">Statistics by period of time</h4>
+            <p class="text-center">Info Info Info Info Info Info Info Info Info Info Info Info</p>
+            <a href="{% url 'statistics-by-time' %}">
+                <button class="btn btn-primary mt-3">Start Now</button>
+            </a>
+        </div>
+    </div>
+    <div class="col-sm-4 d-flex align-items-center justify-content-center p-3 rounded shadow">
+        <div class="d-flex flex-column align-items-center">
+            <i class="bi bi-people"></i>
+            <h4 class="mt-2 text-center">Individual Jumper Statistics</h4>
+            <p class="text-center">Info Info Info Info Info Info Info Info Info Info Info Info</p>
+            <a href="{% url 'statistics-jumper' %}">
+                <button class="btn btn-primary mt-3">Start Now</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

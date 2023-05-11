@@ -2,7 +2,7 @@
 {% block content %}
 <!-- Filters -->
 <div class="container my-4">
-    <form method="GET" action="{% url 'statistics' %}">
+    <form method="GET" action="{% url 'statistics-rankings' %}">
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
@@ -70,13 +70,13 @@
                     <select class="form-control shadow" id="team_filter" name="team_filter">
                         <option value="">ALL</option>
                         <option value="I">Individual</option>
-                        <option value="T">Team</option>
-                        <option value="X">Mixed Team</option>
+                        <option value="T">Team - (Coming Soon)</option>
+                        <option value="X">Mixed Team - (Coming Soon)</option>
                     </select>
                 </div>
             </div>
         </div>
-        <form action="{% url 'statistics' %}" method="POST">
+        <form action="{% url 'statistics-rankings' %}" method="POST">
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-12 text-center mt-3">
@@ -96,24 +96,24 @@
            data-bs-toggle="tab">Sort by Ranking</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="?sort_by=speed_table#speed_table" name="speed_table" data-bs-toggle="tab">Sort by
-            Speed</a>
+        <a class="nav-link" href="?sort_by=speed_table#speed_table" name="speed_table" data-bs-toggle="tab">
+            Sort by Speed</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="?sort_by=style_table#style_table" name="style_table" data-bs-toggle="tab">Sort by
-            Style</a>
+        <a class="nav-link" href="?sort_by=style_table#style_table" name="style_table" data-bs-toggle="tab">
+            Sort by Style</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="?sort_by=luck_table#luck_table" name="luck_table" data-bs-toggle="tab">Sort by
-            Luck</a>
+        <a class="nav-link" href="?sort_by=luck_table#luck_table" name="luck_table" data-bs-toggle="tab">
+            Sort by Luck</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="?sort_by=team_table#team_table" name="team_table" data-bs-toggle="tab">If Team
-            Competition</a>
+        <a class="nav-link" href="?sort_by=team_table#team_table" name="team_table" data-bs-toggle="tab">
+            If Team Competition</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="?sort_by=full_table#full_table" name="full_table" data-bs-toggle="tab">See Full
-            Table</a>
+        <a class="nav-link" href="?sort_by=full_table#full_table" name="full_table" data-bs-toggle="tab">
+            Full Table</a>
     </li>
 </ul>
 
@@ -488,7 +488,7 @@
     </a>
     <div class="collapse" id="collapse{{ year }}">
         {% for file in files %}
-        <a href="{% url 'statistics' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
+        <a href="{% url 'statistics-rankings' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
             <span class="link-text">{{ file }}</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
         </a>

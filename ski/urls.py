@@ -6,7 +6,9 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('fantasy-league/', views.fantasy_league, name='fantasy-league'),
     path('live/', views.live, name='live'),
-    path('statistics/', views.statistics, name='statistics'),
-    path('statistics_main/', views.statistics_main, name='statistics_main'),
+    path('statistics-main/', views.statistics_main, name='statistics-main'),
+    path('statistics-rankings/', views.statistics_rankings, name='statistics-rankings'),
+    path('statistics-by-time/', views.statistics_by_time, name='statistics-by-time'),
+    path('statistics-jumper/', views.statistics_jumper, name='statistics-jumper'),
     path('blog/', views.blog, name='blog'),
 ]
