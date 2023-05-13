@@ -1,4 +1,3 @@
 *.pyc
 settings_local.py
 media/ski_db
-ski/utils
