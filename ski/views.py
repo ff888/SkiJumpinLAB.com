@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from .utils.ststistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
+from .utils.statistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
     get_raw_air_files
 from .utils.live_helpers import get_date_list, get_event_info
 from django.shortcuts import render
@@ -24,7 +24,11 @@ def fantasy_league(request):
     return render(request, 'ski/fantasy-league.html', {'title': 'Fantasy League'})
 
 
-def statistics(request):
+def statistics_main(request):
+    return render(request, 'ski/statistics-main.html', {'title': 'Statistics'})
+
+
+def statistics_rankings(request):
     # directory where CSV files are located
     csv_folder = 'media/ski_db'
     # list of CSV files target only tournaments after 2002
@@ -42,6 +46,9 @@ def statistics(request):
         hill_filter = request.GET.get('hill_filter')
         gender_filter = request.GET.get('gender_filter')
         team_filter = request.GET.get('team_filter')
+
+        # Get the sorting parameter from the request
+        sort_by = request.GET.get('sort_by')
 
         # Filter the csv_files based on the filter values
         filtered_csv_files = [file for file in csv_files if
@@ -89,9 +96,6 @@ def statistics(request):
             df['LUCK RANKING'] = df['COMPENSATION POINTS'].rank(method='dense', ascending=False).astype(int)
             df['STYLE RANKING'] = df['STYLE TOTAL POINTS'].rank(method='dense', ascending=False).astype(int)
 
-            # Retrieve the 'sort_by' parameter from the request's GET parameters
-            sort_by = request.GET.get('sort_by')
-
             # Sort the DataFrame based on the value of 'sort_by'
             if sort_by == 'ranking_table' or sort_by == 'full_table':
                 df = df.sort_values(by='RANKING', ascending=True)
@@ -126,7 +130,7 @@ def statistics(request):
             table_title = f'{name_date} {name_city}'
 
             # render the files list in your template
-            return render(request, 'ski/statistics.html',
+            return render(request, 'ski/statistics-rankings.html',
                           {'filtered_csv_files': filtered_csv_files,
                            'categories': categories,
                            'rows': rows,
@@ -134,11 +138,19 @@ def statistics(request):
                            'table_title': table_title})
 
         # render the files list in your template
-        return render(request, 'ski/statistics.html',
+        return render(request, 'ski/statistics-rankings.html',
                       {'divide_by_year': divide_by_year,
                        'divide_by_season': divide_by_season,
                        'filtered_csv_files': filtered_csv_files,
                        'categories': categories})
+
+
+def statistics_by_time(request):
+    return render(request, 'ski/statistics-by-time.html', {'title': 'Statistics'})
+
+
+def statistics_jumper(request):
+    return render(request, 'ski/statistics-jumper.html', {'title': 'Statistics'})
 
 
 def blog(request):
