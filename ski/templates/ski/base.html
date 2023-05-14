@@ -52,7 +52,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav text-center ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'live' %}">LIVE</a>
+                    <div class="d-flex align-items-center">
+                        <div class="me-2 dot text-danger"></div>
+                        <a class="nav-link text-danger m-0" href="{% url 'live' %}">LIVE</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'fantasy-league' %}">Fantasy League</a>
@@ -69,7 +72,7 @@
             <ul class="navbar-nav me-auto">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
                         {{ user.username }}
                     </a>
@@ -84,13 +87,13 @@
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
-                    <button type="button" class="btn btn-outline-primary btn-sm mx-auto" id="navbarDropdown"
+                    <button type="button" class="btn btn-outline-primary btn-sm mx-auto" id="loginDropdown"
                             data-bs-toggle="dropdown" aria-expanded="false">
                         Login
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start mt-2"
-                        aria-labelledby="navbarDropdown">
+                        aria-labelledby="loginDropdown">
                         <form class="px-4 py-3" method="POST" action="#">
                             {% csrf_token %}
                             <div class="form-group">

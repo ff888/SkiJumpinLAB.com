@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from .utils.ststistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
+from .utils.statistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
     get_raw_air_files
 from .utils.live_helpers import get_date_list, get_event_info
 from django.shortcuts import render
