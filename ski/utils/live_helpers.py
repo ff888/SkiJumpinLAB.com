@@ -3,85 +3,155 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def get_date_list():
-    # Get today's date and format it to extract the month and year
+def get_coming_event_info():
+    event_dict = {}
+    # Get the current date
     today = datetime.date.today()
-    formatted_date = today.strftime("%B %Y")
+    # Format the date as "Month Year"
+    formatted_date = today.strftime("%b %Y")
+    # Create a dictionary to map month names to number
+    # Format date
+    month_mapper = {
+        'Jan': '01',
+        'Feb': '02',
+        'Mar': '03',
+        'Apr': '04',
+        'May': '05',
+        'Jun': '06',
+        'Jul': '07',
+        'Aug': '08',
+        'Sep': '09',
+        'Oct': '10',
+        'Nov': '11',
+        'Dec': '12'
+    }
 
     # Extract the year and month from the formatted date
-    year = formatted_date.split(' ')[1]
-    month = formatted_date.split(' ')[0]
+    month_name, year = formatted_date.split(' ')
+    month_number = month_mapper[month_name]
 
-    # Construct the URL to the recent month's ski jumping events
-    url_to_recent_month = f'https://www.fis-ski.com/DB/ski-jumping/calendar-results.html?eventselection=&place=&sectorcode=JP&seasoncode={year}&categorycode=&disciplinecode=&gendercode=&racedate=&racecodex=&nationcode=&seasonmonth={month}-{year}&saveselection=-1&seasonselection='
+    # month format engine
+    months = [(month_number, year)]
+    for i in range(12):
+        month_number = '0' + str(int(month_number) + 1)
+        if int(month_number) >= 13:
+            month_number = '0' + str(int(month_number) - 12)
+            year = str(int(year) + 1)
+        elif month_number[0] == '0' and len(month_number) == 3:
+            month_number = month_number[1:]
 
-    # Make a request to the URL and parse the HTML response using BeautifulSoup
-    response = requests.get(url_to_recent_month)
-    soup = BeautifulSoup(response.text, 'html.parser')
+        months.append((month_number, year))
 
-    # Find the div containing the select element for filtering by month and year
-    select_month_div = soup.find('div', {'id': 'select_seasonmonth'})
+    for date in months:
+        year = date[1]
+        month = date[0]
+        season = str(int(year) + 1)
 
-    # Extract the list of available months and years from the select element
-    select_date_list = [i for i in select_month_div.text.split('\n') if len(i) > 2]
+        if year not in event_dict:
+            event_dict[year] = {}
+        if month not in event_dict[year]:
+            event_dict[year][month] = []
 
-    # Convert the list of month-year strings to a list of datetime objects
-    datetime_list = [datetime.datetime.strptime(date, '%B %Y') for date in select_date_list]
+        # Construct the URL to the recent month's ski jumping events
+        url_to_recent_month = f'https://www.fis-ski.com/DB/ski-jumping/calendar-results.html?eventselection=&place=&sectorcode=JP&seasoncode={season}&categorycode=&disciplinecode=&gendercode=&racedate=&racecodex=&nationcode=&seasonmonth={month}-{year}&saveselection=-1&seasonselection='
 
-    # Filter the datetime objects to include only dates from the current month or later
-    today = datetime.datetime.now()
-    datetime_list = [d for d in datetime_list if d >= datetime.datetime(today.year, today.month, 1)]
+        # Make a request to the URL and parse the HTML response using BeautifulSoup
+        response = requests.get(url_to_recent_month)
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Sort the list of datetime objects in ascending order
-    datetime_list.sort(reverse=False)
+        calender_events_info = soup.find('div', {'id': 'calendardata'})
 
-    # Convert the sorted datetime objects back to month-year strings
-    sorted_date_list = [datetime.datetime.strftime(date, '%B %Y') for date in datetime_list]
+        event_info = calender_events_info.text.strip()
 
-    # Create a dictionary to group the month-year strings by year
-    date_dict = {}
-    for item in sorted_date_list:
-        month, year = item.split()
-        if year not in date_dict:
-            date_dict[year] = []
-        date_dict[year].append(month)
+        if event_info == 'No events found':
+            event_dict[year][month].append(event_info)
 
-    # Return the dictionary of available months and years
-    return date_dict
+        if event_info != 'No events found':
+            table_content = calender_events_info.text.replace('\n', '_')
+            table_content = [i for i in table_content.split('_') if len(i) > 0]
+
+            link_info = calender_events_info.find(href=True)
+            link_info = link_info['href']
+
+            response_info = requests.get(link_info)
+            soup_info = BeautifulSoup(response_info.text, 'html.parser')
+
+            city_name = soup_info.find('div', {'class': 'event-header'}).text.strip('\n')
+
+            event_details = soup_info.find('div', {'id': 'eventdetailscontent'})
+
+            table_row = event_details.find_all('div', {'class': 'table-row'})
+
+            for row in table_row:
+                info = row.text.split('\n')
+                info = [i.replace(' ', '') for i in info if len(i) > 0]
+                competition_date = info[4]
+                competition_hill = info[6]
+                competition_gender = info[-1]
+
+                c_day = competition_date[:2]
+                c_month = competition_date[2:5]
+                c_year = competition_date[5:]
+
+                month_number_fr = month_mapper[c_month]
+
+                # Format hill information
+                size = competition_hill.split('HS')[-1]
+                if 'Normal' in competition_hill:
+                    hill_info = f'Normal Hill HS{size}'
+                elif 'Large' in competition_hill:
+                    hill_info = f'Large Hill HS{size}'
+                else:
+                    # needs to be fixed for all hill sizes
+                    hill_info = competition_hill
+
+                # Format competition type
+                if competition_gender == 'A':
+                    c_type = 'Mixed Team'
+                elif competition_gender == 'W':
+                    c_type = 'Women'
+                elif competition_gender == 'M':
+                    c_type = 'Men'
+                else:
+                    # needs to be fixed for man/woman team
+                    c_type = 'Team'
+
+                # Skip if competition info is not in the same month
+                if month != month_number_fr:
+                    pass
+                else:
+                    event_dict[year][month].append(f'{c_day} {c_month} {c_year} | {city_name} | {hill_info} | {c_type}')
+    return event_dict
 
 
-def get_event_info(date_dict):
-    # Create an empty dictionary to store the event information
-    info_dict = {}
+def get_event_info(event_dict):
+    event_info_dict = {}
 
-    # Loop through each year and its corresponding months in the date dictionary
-    for year, months in date_dict.items():
-        # Create an empty list to store the event information for each month in the current year
-        year_list = []
+    for year in event_dict:
+        for months_keys in event_dict[year]:
+            month_mapper = {
+                '01': 'January',
+                '02': 'February',
+                '03': 'March',
+                '04': 'April',
+                '05': 'May',
+                '06': 'June',
+                '07': 'July',
+                '08': 'August',
+                '09': 'September',
+                '10': 'October',
+                '11': 'November',
+                '12': 'December'
+            }
+            month_name = month_mapper[months_keys]
+            event = event_dict[year][months_keys]
 
-        # Loop through each month in the current year
-        for month in months:
-            # Construct the URL for the current month and year
-            url_to_recent_month = f'https://www.fis-ski.com/DB/ski-jumping/calendar-results.html?eventselection=&place=&sectorcode=JP&seasoncode={year}&categorycode=&disciplinecode=&gendercode=&racedate=&racecodex=&nationcode=&seasonmonth={month}-{year}&saveselection=-1&seasonselection='
+            if len(event) == 0:
+                event = ['No events found']
 
-            # Use a session to get the HTML content of the page
-            with requests.Session() as session:
-                response = session.get(url_to_recent_month)
+            title = f'{year} {month_name}'
+            if title not in event_info_dict:
+                event_info_dict[title] = []
 
-            # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(response.text, 'html.parser')
-
-            # Find the table with the event information
-            events_table_id = soup.find('div', {'id': 'calendardata'})
-
-            # Split the table contents by newline characters to create a list of table elements
-            table_elements_list = events_table_id.text.strip().split('\n')
-
-            # Append the list of table elements to the list for the current year and month
-            year_list.append({month: table_elements_list})
-
-        # Add the list of event information for the current year to the info dictionary
-        info_dict[year] = year_list
-
-    # Return the dictionary containing all event information
-    return info_dict
+            event_info_dict[title] = event
+    return event_info_dict

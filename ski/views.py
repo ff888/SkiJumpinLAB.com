@@ -3,7 +3,7 @@ import pandas as pd
 
 from .utils.statistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
     get_raw_air_files
-from .utils.live_helpers import get_date_list, get_event_info
+from .utils.live_helpers import get_coming_event_info, get_event_info
 from django.shortcuts import render
 
 
@@ -16,8 +16,8 @@ def about(request):
 
 
 def live(request):
-    date_list = get_event_info(get_date_list())
-    return render(request, 'ski/live.html', {'title': 'LIVE', 'date_list': date_list})
+    event_info = get_event_info(get_coming_event_info())
+    return render(request, 'ski/live.html', {'title': 'LIVE', 'event_info': event_info})
 
 
 def fantasy_league(request):

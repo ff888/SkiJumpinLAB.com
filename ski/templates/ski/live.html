@@ -1,6 +1,7 @@
 {% extends 'ski/base.html' %}
 {% block content %}
 
+{% if live %}
 <div class="list-group list-group-year" style="display: block;">
     <h2 class="mt-4 text-center">LIVE</h2>
     <a class="list-group-item list-group-item-action shadow" data-bs-toggle="collapse" href="#collapseLive"
@@ -29,31 +30,30 @@
         </a>
     </div>
 </div>
+{% endif %}
 
 <div class="list-group list-group-year pt-4" style="display: block;">
     <h2 class="text-center mt-4">Upcoming Events</h2>
-    {% for year, months_dict in date_list.items %}
-    {% for months in months_dict %}
-    {% for month, event_list in months.items %}
-    <a class="list-group-item list-group-item-action shadow" data-bs-toggle="collapse" href="#collapse{{ month }}"
-       aria-expanded="false" aria-controls="collapse{{ month }}">
-                <span class="link-text fw-bold fs-5">
-                    <div class="d-flex align-items-center">
-                      <p class="m-0">{{ month }} {{ year }}</p>
-                    </div>
-                </span>
+    {% for title, events in event_info.items %}
+    {% with slug=title|slugify %}
+    <a class="list-group-item list-group-item-action shadow" data-bs-toggle="collapse" href="#collapse{{ slug }}"
+       aria-expanded="false" aria-controls="collapse{{ slug }}">
+        <span class="link-text fw-bold fs-5">
+            <div class="d-flex align-items-center">
+                <p class="m-0">{{ title }}</p>
+            </div>
+        </span>
         <i class="fas fa-chevron-down ms-auto"></i>
     </a>
-    {% for event in event_list %}
-    <div class="collapse" id="collapse{{ month }}">
-        <a href="{% url 'live' %}?selected_file={{ file }}" class="list-group-item list-group-item-action">
+    {% for event in events %}
+    <div class="collapse" id="collapse{{ slug }}">
+        <a href="#" class="list-group-item list-group-item-action">
             <span class="link-text">{{ event }}</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
         </a>
     </div>
     {% endfor %}
-    {% endfor %}
-    {% endfor %}
+    {% endwith %}
     {% endfor %}
 </div>
 
