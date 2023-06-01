@@ -48,13 +48,35 @@
     {% for event in events %}
     <div class="collapse" id="collapse{{ slug }}">
         <a href="#" class="list-group-item list-group-item-action">
+            {% if event == 'No events found' %}
             <span class="link-text">{{ event }}</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
+            {% else %}
+
+            <div class="container">
+                <div class="row g-0">
+                    <div class="col-3">
+                        <span class="border p-2 d-block">{{ event.0 }}</span>
+                    </div>
+                    <div class="col-3">
+                        <span class="border p-2 d-block">{{ event.1 }}</span>
+                    </div>
+                    <div class="col-3">
+                        <span class="border p-2 d-block">{{ event.2 }}</span>
+                    </div>
+                    <div class="col-3">
+                        <span class="border p-2 d-block">{{ event.3 }}</span>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-external-link-alt ms-auto"></i>
+            {% endif %}
         </a>
     </div>
     {% endfor %}
     {% endwith %}
     {% endfor %}
 </div>
+
 
 {% endblock content %}

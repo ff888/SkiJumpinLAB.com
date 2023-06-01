@@ -1,4 +1,6 @@
 import datetime
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
@@ -67,9 +69,6 @@ def get_coming_event_info():
             event_dict[year][month].append(event_info)
 
         if event_info != 'No events found':
-            table_content = calender_events_info.text.replace('\n', '_')
-            table_content = [i for i in table_content.split('_') if len(i) > 0]
-
             link_info = calender_events_info.find(href=True)
             link_info = link_info['href']
 
@@ -92,6 +91,8 @@ def get_coming_event_info():
                 c_day = competition_date[:2]
                 c_month = competition_date[2:5]
                 c_year = competition_date[5:]
+
+                c_date = f'{c_day} {c_month} {c_year}'
 
                 month_number_fr = month_mapper[c_month]
 
@@ -120,7 +121,8 @@ def get_coming_event_info():
                 if month != month_number_fr:
                     pass
                 else:
-                    event_dict[year][month].append(f'{c_day} {c_month} {c_year} | {city_name} | {hill_info} | {c_type}')
+                    event_info = [c_date, city_name, hill_info, c_type]
+                    event_dict[year][month].append(event_info)
     return event_dict
 
 
