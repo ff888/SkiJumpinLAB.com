@@ -52,24 +52,49 @@
             <span class="link-text">{{ event }}</span>
             <i class="fas fa-external-link-alt ms-auto"></i>
             {% else %}
-
+            {% if event.0 == 'DATE' %}
             <div class="container">
-                <div class="row g-0">
-                    <div class="col-3">
-                        <span class="border p-2 d-block">{{ event.0 }}</span>
+                <div class="row g-0 justify-content-center">
+                    <div class="col-2">
+                        <strong><span class="border p-2 d-block text-center" style="background-color: #e6e8e6;">{{ event.0 }}</span></strong>
                     </div>
-                    <div class="col-3">
-                        <span class="border p-2 d-block">{{ event.1 }}</span>
+                    <div class="col-2">
+                        <strong><span class="border p-2 d-block text-center" style="background-color: #e6e8e6;">{{ event.1 }}</span></strong>
                     </div>
-                    <div class="col-3">
-                        <span class="border p-2 d-block">{{ event.2 }}</span>
+                    <div class="col-2">
+                        <strong><span class="border p-2 d-block text-center" style="background-color: #e6e8e6;">{{ event.2 }}</span></strong>
                     </div>
-                    <div class="col-3">
-                        <span class="border p-2 d-block">{{ event.3 }}</span>
+                    <div class="col-2">
+                        <strong><span class="border p-2 d-block text-center" style="background-color: #e6e8e6;">{{ event.3 }}</span></strong>
+                    </div>
+                    <div class="col-2">
+                        <strong><span class="border p-2 d-block text-center" style="background-color: #e6e8e6;">{{ event.4 }}</span></strong>
                     </div>
                 </div>
             </div>
             <i class="fas fa-external-link-alt ms-auto"></i>
+            {% else %}
+            <div class="container">
+                <div class="row g-0 justify-content-center">
+                    <div class="col-2">
+                        <span class="border p-2 d-block text-center">{{ event.0 }}</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="border p-2 d-block text-center">{{ event.1 }}</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="border p-2 d-block text-center">{{ event.2 }}</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="border p-2 d-block text-center">{{ event.3 }}</span>
+                    </div>
+                    <div class="col-2">
+                        <span class="border p-2 d-block text-center">{{ event.4 }}</span>
+                    </div>
+                </div>
+            </div>
+            <i class="fas fa-external-link-alt ms-auto"></i>
+            {% endif %}
             {% endif %}
         </a>
     </div>

@@ -1,7 +1,6 @@
 import datetime
-
-import pandas as pd
 import requests
+
 from bs4 import BeautifulSoup
 
 
@@ -69,60 +68,75 @@ def get_coming_event_info():
             event_dict[year][month].append(event_info)
 
         if event_info != 'No events found':
-            link_info = calender_events_info.find(href=True)
-            link_info = link_info['href']
 
-            response_info = requests.get(link_info)
-            soup_info = BeautifulSoup(response_info.text, 'html.parser')
+            link_info = calender_events_info.find_all(href=True)
+            link_set = set()
 
-            city_name = soup_info.find('div', {'class': 'event-header'}).text.strip('\n')
+            for link in link_info:
+                link_set.add(link['href'])
 
-            event_details = soup_info.find('div', {'id': 'eventdetailscontent'})
+            link_list = list(link_set)
 
-            table_row = event_details.find_all('div', {'class': 'table-row'})
+            for link in link_list:
+                response_info = requests.get(link)
+                soup_info = BeautifulSoup(response_info.text, 'html.parser')
 
-            for row in table_row:
-                info = row.text.split('\n')
-                info = [i.replace(' ', '') for i in info if len(i) > 0]
-                competition_date = info[4]
-                competition_hill = info[6]
-                competition_gender = info[-1]
+                city_name = soup_info.find('div', {'class': 'event-header'}).text.strip('\n')
 
-                c_day = competition_date[:2]
-                c_month = competition_date[2:5]
-                c_year = competition_date[5:]
+                event_details = soup_info.find('div', {'id': 'eventdetailscontent'})
 
-                c_date = f'{c_day} {c_month} {c_year}'
+                table_row = event_details.find_all('div', {'class': 'table-row'})
 
-                month_number_fr = month_mapper[c_month]
+                for row in table_row:
+                    info = row.text.split('\n')
+                    info = [i.replace(' ', '') for i in info if len(i) > 0]
+                    competition_date = info[4]
+                    competition_hill = info[6]
+                    competition_type = info[-2]
+                    competition_gender = info[-1]
 
-                # Format hill information
-                size = competition_hill.split('HS')[-1]
-                if 'Normal' in competition_hill:
-                    hill_info = f'Normal Hill HS{size}'
-                elif 'Large' in competition_hill:
-                    hill_info = f'Large Hill HS{size}'
-                else:
-                    # needs to be fixed for all hill sizes
-                    hill_info = competition_hill
+                    if competition_gender == 'OPAGamesChildren':
+                        competition_type = info[-5]
+                        competition_gender = info[-4]
 
-                # Format competition type
-                if competition_gender == 'A':
-                    c_type = 'Mixed Team'
-                elif competition_gender == 'W':
-                    c_type = 'Women'
-                elif competition_gender == 'M':
-                    c_type = 'Men'
-                else:
-                    # needs to be fixed for man/woman team
-                    c_type = 'Team'
+                    c_day = competition_date[:2]
+                    c_month = competition_date[2:5]
 
-                # Skip if competition info is not in the same month
-                if month != month_number_fr:
-                    pass
-                else:
-                    event_info = [c_date, city_name, hill_info, c_type]
-                    event_dict[year][month].append(event_info)
+                    c_date = f'{c_day} {month_name} {year}'
+
+                    month_number_fr = month_mapper[c_month]
+
+                    # Format hill information
+                    size = competition_hill.split('HS')[-1]
+                    if 'Small' in competition_hill:
+                        hill_info = f'Small Hill - HS{size}'
+                    elif 'Normal' in competition_hill:
+                        hill_info = f'Normal Hill - HS{size}'
+                    elif 'Medium' in competition_hill:
+                        hill_info = f'Medium Hill - HS{size}'
+                    elif 'Large' in competition_hill:
+                        hill_info = f'Large Hill - HS{size}'
+                    else:
+                        # needs to be fixed for all hill sizes
+                        hill_info = competition_hill
+
+                    # Format competition type
+                    if competition_gender == 'A':
+                        c_gender = 'Mixed Team'
+                    elif competition_gender == 'W':
+                        c_gender = 'Women'
+                    elif competition_gender == 'M':
+                        c_gender = 'Men'
+                    else:
+                        # needs to be fixed for man/woman team
+                        c_gender = competition_gender
+
+                    # Skip if competition info is not in the same month
+                    if month != month_number_fr:
+                        pass
+                    else:
+                        event_info = [c_date, city_name, hill_info, competition_type, c_gender]
+                        event_dict[year][month].append(event_info)
     return event_dict
 
 
@@ -147,9 +161,14 @@ def get_event_info(event_dict):
             }
             month_name = month_mapper[months_keys]
             event = event_dict[year][months_keys]
+            event = sorted(event, key=lambda x: x[0])
 
             if len(event) == 0:
                 event = ['No events found']
+
+            if event[0] != 'No events found':
+                columns_name = ['DATE', 'CITY', 'HILL and SIZE', 'TYPE', 'GENDER']
+                event.insert(0, columns_name)
 
             title = f'{year} {month_name}'
             if title not in event_info_dict:
