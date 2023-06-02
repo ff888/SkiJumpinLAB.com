@@ -167,7 +167,7 @@ def get_event_info(event_dict):
                 event = ['No events found']
 
             if event[0] != 'No events found':
-                columns_name = ['DATE', 'CITY', 'HILL and SIZE', 'TYPE', 'GENDER']
+                columns_name = ['DATE', 'CITY', 'HILL', 'TYPE', 'GENDER']
                 event.insert(0, columns_name)
 
             title = f'{year} {month_name}'
