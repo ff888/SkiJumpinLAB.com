@@ -55,23 +55,13 @@
                     <a class="nav-link" href="{% url 'statistics-main' %}">Statistics</a>
                 </li>
                 <li class="nav-item">
-                    {% if live_event %}
-                    <div class="d-flex align-items-center">
-                        <div class="me-2 dot text-danger"></div>
-                        <a class="nav-link text-danger m-0" href="{% url 'live' %}">LIVE</a>
-                    </div>
-                    <div class="loader"></div>
-                    {% else %}
-                    <div class="d-flex align-items-center">
-                        <a class="nav-link m-0" href="{% url 'live' %}">Upcoming Events</a>
-                    </div>
-                    {% endif %}
+                    <a class="nav-link" href="{% url 'live' %}">Upcoming Events</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'fantasy-league' %}">Fantasy League</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                    <a class="nav-link me-2" href="{% url 'blog' %}">Blog</a>
                 </li>
             </ul>
 
@@ -128,6 +118,18 @@
             </ul>
         </div>
     </nav>
+    <!-- Navbar visible only when LIVE event on -->
+    {% if live_event %}
+    <nav class="me-auto d-flex justify-content-center">
+        <div class="d-flex align-items-center">
+            <div class="me-2 dot text-danger bg-danger"></div>
+            <a class="nav-link text-danger me-5" href="{% url 'live' %}">LIVE</a>
+            <a class="nav-link me-5" href="{% url 'live' %}">Event Name</a>
+            <a class="nav-link text-danger me-2" href="{% url 'live' %}">LIVE</a>
+            <div class="me-2 dot text-danger bg-danger ms-auto"></div>
+        </div>
+    </nav>
+    {% endif %}
 </div>
 
 <div class="container my-3 mx-auto p-0" id="content">
