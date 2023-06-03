@@ -4,31 +4,38 @@ import pandas as pd
 from .utils.statistics_helpers import get_categories, files_by_year, files_by_season, get_four_hills_files, \
     get_raw_air_files
 from .utils.live_helpers import get_coming_event_info, get_event_info
+from .utils.live_info_scraper import check_live_event_now
 from django.shortcuts import render
 
 
 def home(request):
-    return render(request, 'ski/home.html')
+    live_event = check_live_event_now()
+    return render(request, 'ski/home.html', {'live_event': live_event})
 
 
 def about(request):
-    return render(request, 'ski/about.html', {'title': 'About'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/about.html', {'title': 'About', 'live_event': live_event})
 
 
 def live(request):
+    live_event = check_live_event_now()
     event_info = get_event_info(get_coming_event_info())
-    return render(request, 'ski/live.html', {'title': 'LIVE', 'event_info': event_info})
+    return render(request, 'ski/live.html', {'title': 'LIVE', 'event_info': event_info, 'live_event': live_event})
 
 
 def fantasy_league(request):
-    return render(request, 'ski/fantasy-league.html', {'title': 'Fantasy League'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/fantasy-league.html', {'title': 'Fantasy League', 'live_event': live_event})
 
 
 def statistics_main(request):
-    return render(request, 'ski/statistics-main.html', {'title': 'Statistics'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/statistics-main.html', {'title': 'Statistics', 'live_event': live_event})
 
 
 def statistics_rankings(request):
+    live_event = check_live_event_now()
     # directory where CSV files are located
     csv_folder = 'media/ski_db'
     # list of CSV files target only tournaments after 2002
@@ -135,23 +142,28 @@ def statistics_rankings(request):
                            'categories': categories,
                            'rows': rows,
                            'title': title,
-                           'table_title': table_title})
+                           'table_title': table_title,
+                           'live_event': live_event})
 
         # render the files list in your template
         return render(request, 'ski/statistics-rankings.html',
                       {'divide_by_year': divide_by_year,
                        'divide_by_season': divide_by_season,
                        'filtered_csv_files': filtered_csv_files,
-                       'categories': categories})
+                       'categories': categories,
+                       'live_event': live_event})
 
 
 def statistics_by_time(request):
-    return render(request, 'ski/statistics-by-time.html', {'title': 'Statistics'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/statistics-by-time.html', {'title': 'Statistics', 'live_event': live_event})
 
 
 def statistics_jumper(request):
-    return render(request, 'ski/statistics-jumper.html', {'title': 'Statistics'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/statistics-jumper.html', {'title': 'Statistics', 'live_event': live_event})
 
 
 def blog(request):
-    return render(request, 'ski/blog.html', {'title': 'Blog'})
+    live_event = check_live_event_now()
+    return render(request, 'ski/blog.html', {'title': 'Blog', 'live_event': live_event})

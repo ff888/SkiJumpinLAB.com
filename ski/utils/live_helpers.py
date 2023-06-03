@@ -102,7 +102,24 @@ def get_coming_event_info():
                     c_day = competition_date[:2]
                     c_month = competition_date[2:5]
 
-                    c_date = f'{c_day} {month_name} {year}'
+                    month_full = {
+                        'Jan': 'January',
+                        'Feb': 'February',
+                        'Mar': 'March',
+                        'Apr': 'April',
+                        'May': 'May',
+                        'Jun': 'June',
+                        'Jul': 'July',
+                        'Aug': 'August',
+                        'Sep': 'September',
+                        'Oct': 'October',
+                        'Nov': 'November',
+                        'Dec': 'December'
+                        }
+
+                    full_month_name = month_full[c_month]
+
+                    c_date = f'{c_day} {full_month_name} {year}'
 
                     month_number_fr = month_mapper[c_month]
 

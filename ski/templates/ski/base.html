@@ -55,7 +55,7 @@
                     <a class="nav-link" href="{% url 'statistics-main' %}">Statistics</a>
                 </li>
                 <li class="nav-item">
-                    {% if live %}
+                    {% if live_event %}
                     <div class="d-flex align-items-center">
                         <div class="me-2 dot text-danger"></div>
                         <a class="nav-link text-danger m-0" href="{% url 'live' %}">LIVE</a>
